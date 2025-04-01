@@ -1,12 +1,24 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import {
+  Container,
+  ContainerEpisodio,
+  Fila,
+  Imagen,
+  Linea,
+  Sidebar,
+  Tabla,
+  Titulos,
+} from "./DetallesPodcast.style";
+import Header from "./Header";
 
 interface Episodio {
-  trackId: number;
-  trackName: string;
-  releaseDate: string;
-  trackTimeMillis: number;
+  title: string;
+  pubDate: string;
+  description: string;
+  audioUrl: string;
+  duration: string;
 }
 
 interface Podcast {
@@ -14,54 +26,67 @@ interface Podcast {
   collectionName: string;
   artistName: string;
   artworkUrl600: string;
+  feedUrl: string;
   description?: string;
-}
-
-interface EpisodioAPI {
-  trackId: number;
-  trackName: string;
-  releaseDate: string;
-  trackTimeMillis: number;
 }
 
 function DetallesPodcast() {
   const { podcastId } = useParams();
-  const navigate = useNavigate();
 
   const [podcast, setPodcast] = useState<Podcast | null>(null);
   const [episodios, setEpisodios] = useState<Episodio[]>([]);
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    const fetchPodcastData = async () => {
+    const fetchPodcastAndEpisodes = async () => {
       try {
         setCargando(true);
 
-        const response = await axios.get(
-          `https://api.allorigins.win/get?url=${encodeURIComponent(
-            `https://itunes.apple.com/lookup?id=${podcastId}&entity=podcastEpisode`
-          )}`
+        const lookupRes = await axios.get(
+          `https://itunes.apple.com/lookup?id=${podcastId}`
         );
-
-        const data = JSON.parse(response.data.contents);
-        const [info, ...eps] = data.results;
+        const info = lookupRes.data.results[0];
 
         const podcastData: Podcast = {
           collectionId: info.collectionId,
           collectionName: info.collectionName,
           artistName: info.artistName,
           artworkUrl600: info.artworkUrl600,
-          description: info.description || info.collectionName,
+          feedUrl: info.feedUrl,
+          description: "",
         };
 
-        const episodiosData: Episodio[] = eps.map((ep: EpisodioAPI) => ({
-          trackId: ep.trackId,
-          trackName: ep.trackName,
-          releaseDate: ep.releaseDate,
-          trackTimeMillis: ep.trackTimeMillis,
-        }));
-
         setPodcast(podcastData);
+
+        const rssResponse = await axios.get(
+          `https://cors-anywhere.herokuapp.com/${podcastData.feedUrl}`
+        );
+        const xmlString = rssResponse.data;
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(xmlString, "application/xml");
+
+        const items = xml.getElementsByTagName("item");
+        const episodiosData: Episodio[] = Array.from(items).map((item) => {
+          const rawDuration =
+            item.getElementsByTagName("itunes:duration")[0]?.textContent || "";
+          return {
+            title:
+              item.getElementsByTagName("title")[0]?.textContent ||
+              "(Sin título)",
+            pubDate: item.getElementsByTagName("pubDate")[0]?.textContent || "",
+            description:
+              item.getElementsByTagName("description")[0]?.textContent || "",
+            audioUrl:
+              item.getElementsByTagName("enclosure")[0]?.getAttribute("url") ||
+              "",
+            duration: formatDuration(rawDuration),
+          };
+        });
+        const channel = xml.querySelector("channel");
+        const feedDescription =
+          channel?.querySelector("description")?.textContent || "";
+        podcastData.description = feedDescription;
+
         setEpisodios(episodiosData);
       } catch (error) {
         console.error("Error cargando detalles del podcast:", error);
@@ -70,75 +95,75 @@ function DetallesPodcast() {
       }
     };
 
-    fetchPodcastData();
+    fetchPodcastAndEpisodes();
   }, [podcastId]);
 
   if (cargando) return <p className="p-4">Cargando...</p>;
   if (!podcast) return <p className="p-4">No se encontró el podcast.</p>;
 
   return (
-    <div className="flex flex-col md:flex-row gap-6 p-6">
-      <aside className="w-full md:w-1/4 bg-white shadow-md p-4 rounded-md">
-        <img
-          src={podcast.artworkUrl600}
-          alt={podcast.collectionName}
-          className="w-full rounded"
-        />
-        <hr className="my-4" />
-        <h2 className="font-bold text-lg">{podcast.collectionName}</h2>
-        <p className="italic text-gray-600">by {podcast.artistName}</p>
-        <hr className="my-4" />
-        <p className="text-sm text-gray-700">
+    <Container>
+      <Header />
+      <Sidebar>
+        <Imagen src={podcast.artworkUrl600} alt={podcast.collectionName} />
+        <Linea />
+        <h2>{podcast.collectionName}</h2>
+        <p>by {podcast.artistName}</p>
+        <Linea />
+        <p>
           <strong>Description:</strong>
           <br />
           {podcast.description}
         </p>
-      </aside>
+      </Sidebar>
 
-      <main className="flex-1 bg-white shadow-md p-4 rounded-md overflow-auto">
-        <h2 className="font-bold text-xl mb-4">Episodes: {episodios.length}</h2>
-        <table className="table-auto w-full text-left border-collapse">
-          <thead>
-            <tr className="border-b border-gray-200">
-              <th className="p-2">Title</th>
-              <th className="p-2">Date</th>
-              <th className="p-2">Duration</th>
-            </tr>
-          </thead>
-          <tbody>
-            {episodios.map((ep) => (
-              <tr
-                key={ep.trackId}
-                onClick={() =>
-                  navigate(`/podcast/${podcastId}/episode/${ep.trackId}`, {
-                    state: { podcast },
-                  })
-                }
-                className="cursor-pointer hover:bg-gray-50 transition"
-              >
-                <td className="p-2 text-blue-600 underline">{ep.trackName}</td>
-                <td className="p-2">{formatDate(ep.releaseDate)}</td>
-                <td className="p-2">{millisToTime(ep.trackTimeMillis)}</td>
+      <div>
+        <ContainerEpisodio>
+          <h2>Episodes: {episodios.length}</h2>
+        </ContainerEpisodio>
+
+        <main>
+          <Tabla>
+            <thead>
+              <tr>
+                <Titulos>Title</Titulos>
+                <Titulos>Date</Titulos>
+                <Titulos>Duration</Titulos>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </main>
-    </div>
+            </thead>
+            <tbody>
+              {episodios.map((ep, index) => (
+                <tr key={index}>
+                  <Fila>{ep.title}</Fila>
+                  <Fila>{formatDate(ep.pubDate)}</Fila>
+                  <Fila>{ep.duration}</Fila>
+                </tr>
+              ))}
+            </tbody>
+          </Tabla>
+        </main>
+      </div>
+    </Container>
   );
-}
-
-function millisToTime(ms: number) {
-  if (!ms) return "N/A";
-  const totalSeconds = Math.floor(ms / 1000);
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 }
 
 function formatDate(dateString: string) {
   const date = new Date(dateString);
   return date.toLocaleDateString("en-GB");
+}
+
+function formatDuration(raw: string): string {
+  if (!raw) return "";
+  if (raw.includes(":")) return raw;
+
+  const seconds = parseInt(raw);
+  if (isNaN(seconds)) return raw;
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = seconds % 60;
+  return h > 0
+    ? `${h}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`
+    : `${m}:${s.toString().padStart(2, "0")}`;
 }
 
 export default DetallesPodcast;
