@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const Navbar = styled.header`
   width: 100%;
@@ -18,4 +19,8 @@ export const Titulo = styled.h1`
   color: #5b87b1;
   font-size: 1.3rem;
   margin: 0;
+`;
+
+export const LinkInicio = styled(Link)`
+  text-decoration: none;
 `;

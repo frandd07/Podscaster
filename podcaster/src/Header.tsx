@@ -1,13 +1,12 @@
-import { Navbar } from "./Header.style";
-import { Link } from "react-router-dom";
+import { LinkInicio, Navbar } from "./Header.style";
 import { Titulo } from "./Header.style";
 
 const Header = () => {
   return (
     <Navbar>
-      <Link to="/">
+      <LinkInicio to="/">
         <Titulo>Podcaster</Titulo>
-      </Link>
+      </LinkInicio>
     </Navbar>
   );
 };

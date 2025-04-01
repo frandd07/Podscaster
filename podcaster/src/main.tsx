@@ -1,13 +1,12 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
-import Header from "./Header";
 import { BrowserRouter } from "react-router-dom";
+import Principal from "./Principal";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-      <Header />
+      <Principal />
     </BrowserRouter>
   </StrictMode>
 );
