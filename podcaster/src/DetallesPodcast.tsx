@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import {
   Container,
   ContainerEpisodio,
@@ -21,6 +21,7 @@ interface Episodio {
   description: string;
   audioUrl: string;
   duration: string;
+  episodeId: string;
 }
 
 interface Podcast {
@@ -82,6 +83,7 @@ function DetallesPodcast() {
               item.getElementsByTagName("enclosure")[0]?.getAttribute("url") ||
               "",
             duration: formatDuration(rawDuration),
+            episodeId: item.getElementsByTagName("guid")[0]?.textContent || "",
           };
         });
         const channel = xml.querySelector("channel");
@@ -135,7 +137,11 @@ function DetallesPodcast() {
             <tbody>
               {episodios.map((ep, index) => (
                 <Tr key={index}>
-                  <Td>{ep.title}</Td>
+                  <Td>
+                    <Link to={`/podcast/${podcastId}/episode/${ep.episodeId}`}>
+                      {ep.title}
+                    </Link>
+                  </Td>
                   <Td>{formatDate(ep.pubDate)}</Td>
                   <Td>{ep.duration}</Td>
                 </Tr>
