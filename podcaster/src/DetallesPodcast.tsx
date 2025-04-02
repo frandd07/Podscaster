@@ -4,12 +4,14 @@ import { useParams } from "react-router-dom";
 import {
   Container,
   ContainerEpisodio,
-  Fila,
   Imagen,
   Linea,
+  MargenTabla,
   Sidebar,
   Tabla,
-  Titulos,
+  Td,
+  Th,
+  Tr,
 } from "./DetallesPodcast.style";
 import Header from "./Header";
 
@@ -122,26 +124,26 @@ function DetallesPodcast() {
           <h2>Episodes: {episodios.length}</h2>
         </ContainerEpisodio>
 
-        <main>
+        <MargenTabla>
           <Tabla>
             <thead>
-              <tr>
-                <Titulos>Title</Titulos>
-                <Titulos>Date</Titulos>
-                <Titulos>Duration</Titulos>
-              </tr>
+              <Tr>
+                <Th>Title</Th>
+                <Th>Date</Th>
+                <Th>Duration</Th>
+              </Tr>
             </thead>
             <tbody>
               {episodios.map((ep, index) => (
-                <tr key={index}>
-                  <Fila>{ep.title}</Fila>
-                  <Fila>{formatDate(ep.pubDate)}</Fila>
-                  <Fila>{ep.duration}</Fila>
-                </tr>
+                <Tr key={index}>
+                  <Td>{ep.title}</Td>
+                  <Td>{formatDate(ep.pubDate)}</Td>
+                  <Td>{ep.duration}</Td>
+                </Tr>
               ))}
             </tbody>
           </Tabla>
-        </main>
+        </MargenTabla>
       </div>
     </Container>
   );

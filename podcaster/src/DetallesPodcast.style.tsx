@@ -49,14 +49,27 @@ export const Tabla = styled.table`
   margin-top: 30px;
 `;
 
-export const Titulos = styled.th`
+export const Th = styled.th`
   font-weight: bold;
   background-color: #f3f3f3;
   padding: 0.75rem;
   border-bottom: 2px solid #ddd;
 `;
 
-export const Fila = styled.td`
+export const Td = styled.td`
   padding: 0.75rem;
   border-bottom: 1px solid #eee;
+  cursor: pointer;
+`;
+export const Tr = styled.tr`
+  &:nth-child(even) {
+    background-color: #dbdbdb;
+  }
+`;
+
+export const MargenTabla = styled.div`
+  padding: 1rem;
+  background: white;
+  border-radius: 4px;
+  border: 1px solid #ddd;
 `;
