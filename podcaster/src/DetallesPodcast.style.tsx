@@ -30,9 +30,10 @@ export const ContainerEpisodio = styled.div`
   background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
-  padding: 1rem;
+  padding: 0.5rem;
   font-family: Arial, sans-serif;
   overflow-x: auto;
+  margin-bottom: 1rem;
 `;
 
 export const Linea = styled.hr`
@@ -45,7 +46,6 @@ export const Tabla = styled.table`
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  border: 1px solid #ddd;
   margin-top: 30px;
 `;
 

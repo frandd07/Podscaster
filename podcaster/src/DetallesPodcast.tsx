@@ -123,7 +123,6 @@ function DetallesPodcast() {
         <ContainerEpisodio>
           <h2>Episodes: {episodios.length}</h2>
         </ContainerEpisodio>
-
         <MargenTabla>
           <Tabla>
             <thead>
