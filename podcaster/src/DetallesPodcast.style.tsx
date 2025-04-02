@@ -19,6 +19,8 @@ export const Sidebar = styled.aside`
   border-radius: 4px;
   border: 1px solid #ddd;
   font-family: Arial, sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 2px 0 6px rgba(0, 0, 0, 0.05),
+    -2px 0 6px rgba(0, 0, 0, 0.05);
 `;
 
 export const Imagen = styled.img`
@@ -34,6 +36,8 @@ export const ContainerEpisodio = styled.div`
   font-family: Arial, sans-serif;
   overflow-x: auto;
   margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 2px 0 6px rgba(0, 0, 0, 0.05),
+    -2px 0 6px rgba(0, 0, 0, 0.05);
 `;
 
 export const Linea = styled.hr`
@@ -72,4 +76,6 @@ export const MargenTabla = styled.div`
   background: white;
   border-radius: 4px;
   border: 1px solid #ddd;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 2px 0 6px rgba(0, 0, 0, 0.05),
+    -2px 0 6px rgba(0, 0, 0, 0.05);
 `;
