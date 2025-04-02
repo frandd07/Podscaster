@@ -46,7 +46,8 @@ export const Card = styled.div`
   justify-content: flex-end;
   align-items: center;
   padding-top: 40px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1), 9px 0 9px rgba(0, 0, 0, 0.05),
+    -2px 0 6px rgba(0, 0, 0, 0.05);
   cursor: pointer;
 `;
 
@@ -68,4 +69,8 @@ export const Imagen = styled.img`
 export const CardContenido = styled.div`
   margin-top: 0px;
   padding: 0 10px;
+`;
+
+export const Autor = styled.p`
+  color: #525252;
 `;

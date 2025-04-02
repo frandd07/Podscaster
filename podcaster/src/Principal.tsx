@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Header from "./Header";
 import {
+  Autor,
   Card,
   CardContenido,
   FiltroContainer,
@@ -93,7 +94,7 @@ function Principal() {
             <CardContenido>
               <Imagen src={podcast.image} alt={podcast.name} />
               <TituloCard>{podcast.name.toUpperCase()}</TituloCard>
-              <p>Author: {podcast.author}</p>
+              <Autor>Author: {podcast.author}</Autor>
             </CardContenido>
           </Card>
         ))}
