@@ -36,10 +36,12 @@ interface respAPI {
 function Principal() {
   const [podcasts, setPodcasts] = useState<Podcast[]>([]);
   const [filtrar, setFiltrar] = useState<string>("");
+  const [cargando, setCargando] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
+      setCargando(true);
       try {
         const response = await axios.get<respAPI>(
           "https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json"
@@ -57,6 +59,8 @@ function Principal() {
         setPodcasts(podcasts);
       } catch (e) {
         console.error("ERROR: ", e);
+      } finally {
+        setCargando(false);
       }
     };
 
@@ -72,7 +76,7 @@ function Principal() {
 
   return (
     <>
-      <Header />
+      <Header cargando={cargando} />
       <FiltroContainer>
         <NumeroFiltrado>{filtrarPorNombre.length}</NumeroFiltrado>
         <InputBuscar

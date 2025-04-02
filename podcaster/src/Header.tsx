@@ -1,12 +1,17 @@
-import { LinkInicio, Navbar } from "./Header.style";
+import { IndicadorVisual, LinkInicio, Navbar } from "./Header.style";
 import { Titulo } from "./Header.style";
 
-const Header = () => {
+interface Props {
+  cargando: boolean;
+}
+
+const Header = ({ cargando }: Props) => {
   return (
     <Navbar>
       <LinkInicio to="/">
         <Titulo>Podcaster</Titulo>
       </LinkInicio>
+      {cargando && <IndicadorVisual />}
     </Navbar>
   );
 };

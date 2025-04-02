@@ -102,12 +102,12 @@ function DetallesPodcast() {
     fetchPodcastAndEpisodes();
   }, [podcastId]);
 
-  if (cargando) return <p className="p-4">Cargando...</p>;
+  if (cargando) return <Header cargando={cargando} />;
   if (!podcast) return <p className="p-4">No se encontró el podcast.</p>;
 
   return (
     <Container>
-      <Header />
+      <Header cargando={cargando} />
       <Sidebar>
         <Imagen src={podcast.artworkUrl600} alt={podcast.collectionName} />
         <Linea />
