@@ -105,8 +105,9 @@ function DetallesEpisodio() {
         <Linea />
         <p>
           <strong>Description:</strong>
-          <br />
-          {podcast.description}
+          <div
+            dangerouslySetInnerHTML={{ __html: podcast.description || "" }}
+          />
         </p>
       </Sidebar>
 
