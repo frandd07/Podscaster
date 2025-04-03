@@ -1,5 +1,5 @@
-import styled, { keyframes } from "styled-components";
-import { Link } from "react-router-dom";
+import styled, { keyframes } from 'styled-components'
+import { Link } from 'react-router-dom'
 
 export const Navbar = styled.header`
   width: 100%;
@@ -13,17 +13,17 @@ export const Navbar = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`;
+`
 
 export const Titulo = styled.h1`
   color: #5b87b1;
   font-size: 1.3rem;
   margin: 0;
-`;
+`
 
 export const LinkInicio = styled(Link)`
   text-decoration: none;
-`;
+`
 
 const spin = keyframes`
   from {
@@ -32,7 +32,7 @@ const spin = keyframes`
   to {
     transform: rotate(360deg);
   }
-`;
+`
 
 export const IndicadorVisual = styled.div`
   position: fixed;
@@ -45,4 +45,4 @@ export const IndicadorVisual = styled.div`
   border-radius: 50%;
   animation: ${spin} 0.8s linear infinite;
   z-index: 9999;
-`;
+`

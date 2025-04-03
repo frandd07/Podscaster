@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const BarraAudio = styled.audio`
   background-color: #424242;
@@ -22,4 +22,4 @@ export const BarraAudio = styled.audio`
   &::-webkit-media-controls-settings-button {
     filter: invert(1);
   }
-`;
+`
