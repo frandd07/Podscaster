@@ -42,6 +42,19 @@ function DetallesPodcast() {
 
   useEffect(() => {
     const fetchPodcastAndEpisodes = async () => {
+      const storedPodcast = localStorage.getItem(`podcast-${podcastId}`);
+      const storedTime = localStorage.getItem(`podcast-${podcastId}-lastFetch`);
+      const hoy = Date.now();
+      const dia = 24 * 60 * 60 * 1000;
+
+      if (storedPodcast && storedTime && hoy - parseInt(storedTime) < dia) {
+        const parsed = JSON.parse(storedPodcast);
+        setPodcast(parsed.podcast);
+        setEpisodios(parsed.episodios);
+        setCargando(false);
+        return;
+      }
+
       try {
         setCargando(true);
 
@@ -58,8 +71,6 @@ function DetallesPodcast() {
           feedUrl: info.feedUrl,
           description: "",
         };
-
-        setPodcast(podcastData);
 
         const rssResponse = await axios.get(
           `https://cors-anywhere.herokuapp.com/${podcastData.feedUrl}`
@@ -86,12 +97,23 @@ function DetallesPodcast() {
             episodeId: item.getElementsByTagName("guid")[0]?.textContent || "",
           };
         });
+
         const channel = xml.querySelector("channel");
         const feedDescription =
           channel?.querySelector("description")?.textContent || "";
         podcastData.description = feedDescription;
 
+        setPodcast(podcastData);
         setEpisodios(episodiosData);
+
+        localStorage.setItem(
+          `podcast-${podcastId}`,
+          JSON.stringify({ podcast: podcastData, episodios: episodiosData })
+        );
+        localStorage.setItem(
+          `podcast-${podcastId}-lastFetch`,
+          Date.now().toString()
+        );
       } catch (error) {
         console.error("Error cargando detalles del podcast:", error);
       } finally {
