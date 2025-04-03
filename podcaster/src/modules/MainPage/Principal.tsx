@@ -15,15 +15,17 @@ import Header from '@components/Header'
 import { useGetPodcasts } from '@api/hooks/useGetPodcasts'
 import { Podcast } from '@api/models/podcast.model'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export function Principal() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const [filteredText, setFilteredText] = useState<string>('')
 
   const { data: podcasts, isLoading, isSuccess } = useGetPodcasts()
 
-  const [filteredPodcasts, setFilteredPodcasts] = useState<Podcast[]>(podcasts || [])
+  const [filteredPodcasts, setFilteredPodcasts] = useState<Podcast[]>([])
 
   const handleOnChangeFilter = (filtro: string) => {
     const filteredPodcasts = podcasts
@@ -41,7 +43,7 @@ export function Principal() {
     if (isSuccess && podcasts) {
       setFilteredPodcasts(podcasts)
     }
-  }, [podcasts])
+  }, [podcasts, isSuccess])
 
   return (
     <>
@@ -51,7 +53,7 @@ export function Principal() {
         <InputBuscar
           type="text"
           value={filteredText}
-          placeholder="Filter podcast..."
+          placeholder={t('mainPage.placeholder.filterPodcast')}
           onChange={(e) => {
             setFilteredText(e.target.value)
             handleOnChangeFilter(e.target.value)
