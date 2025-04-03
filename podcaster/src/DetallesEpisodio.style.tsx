@@ -2,9 +2,9 @@ import styled from "styled-components";
 
 export const BarraAudio = styled.audio`
   background-color: #424242;
-  margintop: 1rem;
+  margin-top: 2rem;
   width: 100%;
-  border-radius: 10px;
+  border-radius: 25px;
   &::-webkit-media-controls-panel {
     background-color: #424242;
   }
