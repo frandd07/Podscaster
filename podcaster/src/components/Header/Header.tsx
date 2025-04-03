@@ -5,7 +5,7 @@ interface Props {
   cargando: boolean
 }
 
-const Header = ({ cargando }: Props) => {
+export const Header = ({ cargando }: Props) => {
   return (
     <Navbar>
       <LinkInicio to="/">
@@ -15,5 +15,3 @@ const Header = ({ cargando }: Props) => {
     </Navbar>
   )
 }
-
-export default Header

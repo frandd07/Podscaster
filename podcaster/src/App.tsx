@@ -1,24 +1,12 @@
-import { Routes, Route } from 'react-router-dom'
-import Principal from './Principal'
-import DetallesPodcast from './DetallesPodcast'
-import DetallesEpisodio from './DetallesEpisodio'
+import { QueryClientProvider } from '@tanstack/react-query'
+import queryClient from '@api/queryClient'
+import AppRouter from '@components/AppRouter'
 
 function App() {
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={<Principal />}
-      />
-      <Route
-        path="/podcast/:podcastId"
-        element={<DetallesPodcast />}
-      />
-      <Route
-        path="/podcast/:podcastId/episode/:episodeId"
-        element={<DetallesEpisodio />}
-      />
-    </Routes>
+    <QueryClientProvider client={queryClient}>
+      <AppRouter />
+    </QueryClientProvider>
   )
 }
 

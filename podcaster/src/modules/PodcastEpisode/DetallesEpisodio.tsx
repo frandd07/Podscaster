@@ -1,10 +1,17 @@
 import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import Header from './Header'
-import { Container, ContainerEpisodio, Imagen, Linea, Sidebar } from './DetallesPodcast.style'
+
 import { BarraAudio } from './DetallesEpisodio.style'
 import { Link } from 'react-router-dom'
+import Header from '@components/Header'
+import {
+  Container,
+  ContainerEpisodio,
+  Imagen,
+  Linea,
+  Sidebar,
+} from '@modules/PodcastDetails/DetallesPodcast.style'
 
 interface Episodio {
   trackId: string
@@ -22,7 +29,7 @@ interface Podcast {
   description?: string
 }
 
-function DetallesEpisodio() {
+export function DetallesEpisodio() {
   const { podcastId, episodeId } = useParams()
 
   const [podcast, setPodcast] = useState<Podcast | null>(null)
@@ -125,5 +132,3 @@ function DetallesEpisodio() {
     </Container>
   )
 }
-
-export default DetallesEpisodio
