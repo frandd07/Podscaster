@@ -38,9 +38,19 @@ function Principal() {
   const [filtrar, setFiltrar] = useState<string>("");
   const [cargando, setCargando] = useState(true);
   const navigate = useNavigate();
-
   useEffect(() => {
     const fetchData = async () => {
+      const savedData = localStorage.getItem("podcasts");
+      const lastFetch = localStorage.getItem("lastFetch");
+      const ahora = Date.now();
+      const dia = 24 * 60 * 60 * 1000;
+
+      if (savedData && lastFetch && ahora - parseInt(lastFetch) < dia) {
+        setPodcasts(JSON.parse(savedData));
+        setCargando(false);
+        return;
+      }
+
       setCargando(true);
       try {
         const response = await axios.get<respAPI>(
@@ -57,6 +67,8 @@ function Principal() {
         }));
 
         setPodcasts(podcasts);
+        localStorage.setItem("podcasts", JSON.stringify(podcasts));
+        localStorage.setItem("lastFetch", Date.now().toString());
       } catch (e) {
         console.error("ERROR: ", e);
       } finally {
