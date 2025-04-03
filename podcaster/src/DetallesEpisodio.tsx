@@ -10,6 +10,7 @@ import {
   Sidebar,
 } from "./DetallesPodcast.style";
 import { BarraAudio } from "./DetallesEpisodio.style";
+import { Link } from "react-router-dom";
 
 interface Episodio {
   trackId: string;
@@ -98,11 +99,22 @@ function DetallesEpisodio() {
       <Header cargando={cargando} />
 
       <Sidebar>
-        <Imagen src={podcast.artworkUrl600} alt={podcast.collectionName} />
+        <Link to={`/podcast/${podcastId}`}>
+          <Imagen src={podcast.artworkUrl600} alt={podcast.collectionName} />
+        </Link>
+
         <Linea />
-        <h2>{podcast.collectionName}</h2>
-        <p>by {podcast.artistName}</p>
+
+        <h2>
+          <Link to={`/podcast/${podcastId}`}>{podcast.collectionName}</Link>
+        </h2>
+
+        <p>
+          by <Link to={`/podcast/${podcastId}`}>{podcast.artistName}</Link>
+        </p>
+
         <Linea />
+
         <p>
           <strong>Description:</strong>
           <div
