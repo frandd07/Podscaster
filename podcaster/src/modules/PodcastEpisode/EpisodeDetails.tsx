@@ -1,9 +1,5 @@
-import { useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-
-import { Audio } from './EpisodeDetails.style'
-import { Link } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Header from '@components/Header'
 import {
   Container,
@@ -12,88 +8,23 @@ import {
   Line,
   Sidebar,
 } from '@modules/PodcastDetails/PodcastDetails.style'
-import { useTranslation } from 'react-i18next'
-
-interface Episode {
-  trackId: string
-  trackName: string
-  description: string
-  audioUrl: string
-}
-
-interface Podcast {
-  collectionId: number
-  collectionName: string
-  artistName: string
-  artworkUrl600: string
-  feedUrl: string
-  description?: string
-}
+import { Audio } from './EpisodeDetails.style'
+import { useGetEpisodeDetails } from '@api/hooks/useGetEpisodeDetails'
 
 export function EpisodeDetails() {
   const { podcastId, episodeId } = useParams()
   const { t } = useTranslation()
 
-  const [podcast, setPodcast] = useState<Podcast | null>(null)
-  const [episodio, setEpisodio] = useState<Episode | null>(null)
-  const [loading, setLoading] = useState(true)
+  const { data, isLoading, isError } = useGetEpisodeDetails(podcastId, episodeId)
 
-  useEffect(() => {
-    const fetchPodcastAndEpisode = async () => {
-      try {
-        setLoading(true)
+  if (isLoading) return <Header cargando />
+  if (isError || !data?.podcast || !data?.episodio) return <p>{t('podcastDetails.negative')}</p>
 
-        const lookupRes = await axios.get(`https://itunes.apple.com/lookup?id=${podcastId}`)
-        const info = lookupRes.data.results[0]
-
-        const podcastData: Podcast = {
-          collectionId: info.collectionId,
-          collectionName: info.collectionName,
-          artistName: info.artistName,
-          artworkUrl600: info.artworkUrl600,
-          feedUrl: info.feedUrl,
-        }
-
-        const rssRes = await axios.get(`https://cors-anywhere.herokuapp.com/${podcastData.feedUrl}`)
-        const xmlString = rssRes.data
-        const parser = new DOMParser()
-        const xml = parser.parseFromString(xmlString, 'application/xml')
-
-        const channel = xml.querySelector('channel')
-        const feedDescription = channel?.querySelector('description')?.textContent || ''
-        podcastData.description = feedDescription
-
-        setPodcast(podcastData)
-
-        const items = xml.getElementsByTagName('item')
-        const episodes = Array.from(items).map((item) => {
-          const trackId = item.querySelector('guid')?.textContent || ''
-          return {
-            trackId: trackId,
-            trackName: item.querySelector('title')?.textContent || '',
-            description: item.querySelector('description')?.textContent || '',
-            audioUrl: item.querySelector('enclosure')?.getAttribute('url') || '',
-          }
-        })
-
-        const ep = episodes.find((e) => e.trackId === episodeId)
-        setEpisodio(ep || null)
-      } catch (err) {
-        console.error('Error cargando episodio:', err)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchPodcastAndEpisode()
-  }, [podcastId, episodeId])
-
-  if (loading) return <Header cargando={loading} />
-  if (!podcast || !episodio) return <p>{t('podcastDetails.negative')}</p>
+  const { podcast, episodio } = data
 
   return (
     <Container>
-      <Header cargando={loading} />
+      <Header cargando={false} />
 
       <Sidebar>
         <Link to={`/podcast/${podcastId}`}>
