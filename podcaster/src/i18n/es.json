@@ -11,6 +11,7 @@
     "title": "Título",
     "duracion": "Duración",
     "date": "Fecha",
-    "by": "de"
+    "by": "de",
+    "negative": "No hay resultados"
   }
 }

@@ -89,7 +89,7 @@ export function EpisodeDetails() {
   }, [podcastId, episodeId])
 
   if (loading) return <Header cargando={loading} />
-  if (!podcast || !episodio) return <p>No se encontró el episodio.</p>
+  if (!podcast || !episodio) return <p>{t('podcastDetails.negative')}</p>
 
   return (
     <Container>
