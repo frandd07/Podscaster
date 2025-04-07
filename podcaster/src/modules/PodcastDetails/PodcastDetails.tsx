@@ -3,21 +3,21 @@ import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import {
   Container,
-  ContainerEpisodio,
-  Imagen,
-  Linea,
-  MargenTabla,
+  ContainerEpisode,
+  Image,
+  Line,
+  MargenTable,
   Sidebar,
-  Tabla,
+  Table,
   Td,
   Th,
   Tr,
-} from './DetallesPodcast.style'
+} from './PodcastDetails.style'
 import Header from '@components/Header'
-import { formatDate, formatDuration } from './DetallesPodcast.utils'
+import { formatDate, formatDuration } from './PodcastDetails.utils'
 import { useTranslation } from 'react-i18next'
 
-interface Episodio {
+interface Episode {
   title: string
   pubDate: string
   description: string
@@ -35,31 +35,31 @@ interface Podcast {
   description?: string
 }
 
-export function DetallesPodcast() {
+export function PodcastDetails() {
   const { podcastId } = useParams()
   const { t } = useTranslation()
 
   const [podcast, setPodcast] = useState<Podcast | null>(null)
-  const [episodios, setEpisodios] = useState<Episodio[]>([])
-  const [cargando, setCargando] = useState(true)
+  const [episodios, setEpisodios] = useState<Episode[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchPodcastAndEpisodes = async () => {
       const storedPodcast = localStorage.getItem(`podcast-${podcastId}`)
       const storedTime = localStorage.getItem(`podcast-${podcastId}-lastFetch`)
-      const hoy = Date.now()
-      const dia = 24 * 60 * 60 * 1000
+      const today = Date.now()
+      const day = 24 * 60 * 60 * 1000
 
-      if (storedPodcast && storedTime && hoy - parseInt(storedTime) < dia) {
+      if (storedPodcast && storedTime && today - parseInt(storedTime) < day) {
         const parsed = JSON.parse(storedPodcast)
         setPodcast(parsed.podcast)
         setEpisodios(parsed.episodios)
-        setCargando(false)
+        setLoading(false)
         return
       }
 
       try {
-        setCargando(true)
+        setLoading(true)
 
         const lookupRes = await axios.get(`https://itunes.apple.com/lookup?id=${podcastId}`)
         const info = lookupRes.data.results[0]
@@ -81,7 +81,7 @@ export function DetallesPodcast() {
         const xml = parser.parseFromString(xmlString, 'application/xml')
 
         const items = xml.getElementsByTagName('item')
-        const episodiosData: Episodio[] = Array.from(items).map((item) => {
+        const episodesData: Episode[] = Array.from(items).map((item) => {
           const rawDuration = item.getElementsByTagName('itunes:duration')[0]?.textContent || ''
           return {
             title: item.getElementsByTagName('title')[0]?.textContent || '(Sin título)',
@@ -98,41 +98,41 @@ export function DetallesPodcast() {
         podcastData.description = feedDescription
 
         setPodcast(podcastData)
-        setEpisodios(episodiosData)
+        setEpisodios(episodesData)
 
         localStorage.setItem(
           `podcast-${podcastId}`,
-          JSON.stringify({ podcast: podcastData, episodios: episodiosData }),
+          JSON.stringify({ podcast: podcastData, episodios: episodesData }),
         )
         localStorage.setItem(`podcast-${podcastId}-lastFetch`, Date.now().toString())
       } catch (error) {
         console.error('Error cargando detalles del podcast:', error)
       } finally {
-        setCargando(false)
+        setLoading(false)
       }
     }
 
     fetchPodcastAndEpisodes()
   }, [podcastId])
 
-  if (cargando) return <Header cargando={cargando} />
+  if (loading) return <Header cargando={loading} />
   if (!podcast) return <p className="p-4">No se encontró el podcast.</p>
 
   return (
     <Container>
-      <Header cargando={cargando} />
+      <Header cargando={loading} />
       <Sidebar>
-        <Imagen
+        <Image
           src={podcast.artworkUrl600}
           alt={podcast.collectionName}
         />
-        <Linea />
+        <Line />
         <h2>{podcast.collectionName}</h2>
         <p>
           {' '}
           {t('podcastDetails.by')}: {podcast.artistName}
         </p>
-        <Linea />
+        <Line />
         <p>
           <strong> {t('podcastDetails.description')}:</strong>
           <div dangerouslySetInnerHTML={{ __html: podcast.description || '' }} />
@@ -140,13 +140,13 @@ export function DetallesPodcast() {
       </Sidebar>
 
       <div>
-        <ContainerEpisodio>
+        <ContainerEpisode>
           <h2>
             {t('podcastDetails.episodes')}: {episodios.length}
           </h2>
-        </ContainerEpisodio>
-        <MargenTabla>
-          <Tabla>
+        </ContainerEpisode>
+        <MargenTable>
+          <Table>
             <thead>
               <Tr>
                 <Th> {t('podcastDetails.title')}</Th>
@@ -165,8 +165,8 @@ export function DetallesPodcast() {
                 </Tr>
               ))}
             </tbody>
-          </Tabla>
-        </MargenTabla>
+          </Table>
+        </MargenTable>
       </div>
     </Container>
   )

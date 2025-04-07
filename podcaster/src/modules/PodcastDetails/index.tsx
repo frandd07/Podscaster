@@ -1,3 +1,3 @@
-import { DetallesPodcast } from './DetallesPodcast'
+import { PodcastDetails } from './PodcastDetails'
 
-export default DetallesPodcast
+export default PodcastDetails

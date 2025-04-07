@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
-export const InputBuscar = styled.input`
+export const InputSearch = styled.input`
   right: 0%;
 `
 
-export const NumeroFiltrado = styled.span`
+export const NumberFiltered = styled.span`
   background-color: #5b87b1;
   border-radius: 5px;
   color: #ffffff;
@@ -13,7 +13,7 @@ export const NumeroFiltrado = styled.span`
   margin-right: 5px;
 `
 
-export const FiltroContainer = styled.div`
+export const FilterContainer = styled.div`
   position: fixed;
   top: 10%;
   width: 100%;
@@ -53,12 +53,12 @@ export const Card = styled.div`
   cursor: pointer;
 `
 
-export const TituloCard = styled.h2`
+export const TitleCard = styled.h2`
   font-size: 1rem;
   text-align: center;
   word-wrap: break-word;
 `
-export const Imagen = styled.img`
+export const Image = styled.img`
   border-radius: 50%;
   object-fit: cover;
   width: 100px;
@@ -68,7 +68,7 @@ export const Imagen = styled.img`
   left: calc(50% - 50px);
 `
 
-export const CardContenido = styled.div`
+export const CardContent = styled.div`
   margin-top: 0px;
   padding: 0 10px;
 `

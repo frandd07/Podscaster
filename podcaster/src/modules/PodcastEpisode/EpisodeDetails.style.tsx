@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const BarraAudio = styled.audio`
+export const Audio = styled.audio`
   background-color: #424242;
   margin-top: 2rem;
   width: 100%;

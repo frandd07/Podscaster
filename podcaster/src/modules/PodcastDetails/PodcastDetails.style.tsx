@@ -25,12 +25,12 @@ export const Sidebar = styled.aside`
     -2px 0 6px rgba(0, 0, 0, 0.05);
 `
 
-export const Imagen = styled.img`
+export const Image = styled.img`
   width: 100%;
   border-radius: 4px;
 `
 
-export const ContainerEpisodio = styled.div`
+export const ContainerEpisode = styled.div`
   background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -44,13 +44,13 @@ export const ContainerEpisodio = styled.div`
     -2px 0 6px rgba(0, 0, 0, 0.05);
 `
 
-export const Linea = styled.hr`
+export const Line = styled.hr`
   margin: 1rem 0;
   border: none;
   border-top: 1px solid #ddd;
 `
 
-export const Tabla = styled.table`
+export const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
   text-align: left;
@@ -75,7 +75,7 @@ export const Tr = styled.tr`
   }
 `
 
-export const MargenTabla = styled.div`
+export const MargenTable = styled.div`
   padding: 1rem;
   background: white;
   border-radius: 4px;

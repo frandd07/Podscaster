@@ -1,5 +1,5 @@
-import { IndicadorVisual, LinkInicio, Navbar } from './Header.style'
-import { Titulo } from './Header.style'
+import { VisualIndicator, LinkHome, Navbar } from './Header.style'
+import { Title } from './Header.style'
 
 interface Props {
   cargando: boolean
@@ -8,10 +8,10 @@ interface Props {
 export const Header = ({ cargando }: Props) => {
   return (
     <Navbar>
-      <LinkInicio to="/">
-        <Titulo>Podcaster</Titulo>
-      </LinkInicio>
-      {cargando && <IndicadorVisual />}
+      <LinkHome to="/">
+        <Title>Podcaster</Title>
+      </LinkHome>
+      {cargando && <VisualIndicator />}
     </Navbar>
   )
 }

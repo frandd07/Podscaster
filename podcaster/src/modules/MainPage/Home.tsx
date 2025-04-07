@@ -1,14 +1,14 @@
 import {
   Autor,
   Card,
-  CardContenido,
-  FiltroContainer,
+  CardContent,
+  FilterContainer,
   GridContainer,
-  Imagen,
-  InputBuscar,
-  NumeroFiltrado,
-  TituloCard,
-} from './Principal.style'
+  Image,
+  InputSearch,
+  NumberFiltered,
+  TitleCard,
+} from './Home.style'
 
 import { useNavigate } from 'react-router-dom'
 import Header from '@components/Header'
@@ -17,7 +17,7 @@ import { Podcast } from '@api/models/podcast.model'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-export function Principal() {
+export function Home() {
   const navigate = useNavigate()
   const { t } = useTranslation()
 
@@ -48,9 +48,9 @@ export function Principal() {
   return (
     <>
       <Header cargando={isLoading} />
-      <FiltroContainer>
-        <NumeroFiltrado>{filteredPodcasts.length}</NumeroFiltrado>
-        <InputBuscar
+      <FilterContainer>
+        <NumberFiltered>{filteredPodcasts.length}</NumberFiltered>
+        <InputSearch
           type="text"
           value={filteredText}
           placeholder={t('mainPage.placeholder.filterPodcast')}
@@ -59,7 +59,7 @@ export function Principal() {
             handleOnChangeFilter(e.target.value)
           }}
         />
-      </FiltroContainer>
+      </FilterContainer>
 
       <GridContainer>
         {filteredPodcasts.map((podcast) => (
@@ -67,16 +67,16 @@ export function Principal() {
             key={podcast.id}
             onClick={() => navigate(`/podcast/${podcast.id}`)}
           >
-            <CardContenido>
-              <Imagen
+            <CardContent>
+              <Image
                 src={podcast.image}
                 alt={podcast.name}
               />
-              <TituloCard>{podcast.name.toUpperCase()}</TituloCard>
+              <TitleCard>{podcast.name.toUpperCase()}</TitleCard>
               <Autor>
                 {t('mainPage.authorLabel')}: {podcast.author}
               </Autor>
-            </CardContenido>
+            </CardContent>
           </Card>
         ))}
       </GridContainer>

@@ -1,3 +1,3 @@
-import { Principal } from './Principal'
+import { Home } from './Home'
 
-export default Principal
+export default Home

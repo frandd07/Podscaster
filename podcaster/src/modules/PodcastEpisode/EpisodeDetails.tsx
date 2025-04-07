@@ -2,19 +2,19 @@ import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-import { BarraAudio } from './DetallesEpisodio.style'
+import { Audio } from './EpisodeDetails.style'
 import { Link } from 'react-router-dom'
 import Header from '@components/Header'
 import {
   Container,
-  ContainerEpisodio,
-  Imagen,
-  Linea,
+  ContainerEpisode,
+  Image,
+  Line,
   Sidebar,
-} from '@modules/PodcastDetails/DetallesPodcast.style'
+} from '@modules/PodcastDetails/PodcastDetails.style'
 import { useTranslation } from 'react-i18next'
 
-interface Episodio {
+interface Episode {
   trackId: string
   trackName: string
   description: string
@@ -30,18 +30,18 @@ interface Podcast {
   description?: string
 }
 
-export function DetallesEpisodio() {
+export function EpisodeDetails() {
   const { podcastId, episodeId } = useParams()
   const { t } = useTranslation()
 
   const [podcast, setPodcast] = useState<Podcast | null>(null)
-  const [episodio, setEpisodio] = useState<Episodio | null>(null)
-  const [cargando, setCargando] = useState(true)
+  const [episodio, setEpisodio] = useState<Episode | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchPodcastAndEpisode = async () => {
       try {
-        setCargando(true)
+        setLoading(true)
 
         const lookupRes = await axios.get(`https://itunes.apple.com/lookup?id=${podcastId}`)
         const info = lookupRes.data.results[0]
@@ -66,7 +66,7 @@ export function DetallesEpisodio() {
         setPodcast(podcastData)
 
         const items = xml.getElementsByTagName('item')
-        const episodios = Array.from(items).map((item) => {
+        const episodes = Array.from(items).map((item) => {
           const trackId = item.querySelector('guid')?.textContent || ''
           return {
             trackId: trackId,
@@ -76,34 +76,34 @@ export function DetallesEpisodio() {
           }
         })
 
-        const ep = episodios.find((e) => e.trackId === episodeId)
+        const ep = episodes.find((e) => e.trackId === episodeId)
         setEpisodio(ep || null)
       } catch (err) {
         console.error('Error cargando episodio:', err)
       } finally {
-        setCargando(false)
+        setLoading(false)
       }
     }
 
     fetchPodcastAndEpisode()
   }, [podcastId, episodeId])
 
-  if (cargando) return <Header cargando={cargando} />
+  if (loading) return <Header cargando={loading} />
   if (!podcast || !episodio) return <p>No se encontró el episodio.</p>
 
   return (
     <Container>
-      <Header cargando={cargando} />
+      <Header cargando={loading} />
 
       <Sidebar>
         <Link to={`/podcast/${podcastId}`}>
-          <Imagen
+          <Image
             src={podcast.artworkUrl600}
             alt={podcast.collectionName}
           />
         </Link>
 
-        <Linea />
+        <Line />
 
         <h2>
           <Link to={`/podcast/${podcastId}`}>{podcast.collectionName}</Link>
@@ -114,7 +114,7 @@ export function DetallesEpisodio() {
           <Link to={`/podcast/${podcastId}`}> {podcast.artistName}</Link>
         </p>
 
-        <Linea />
+        <Line />
 
         <p>
           <strong>{t('podcastDetails.description')}:</strong>
@@ -122,16 +122,16 @@ export function DetallesEpisodio() {
         </p>
       </Sidebar>
 
-      <ContainerEpisodio>
+      <ContainerEpisode>
         <h2>{episodio.trackName}</h2>
         <em>
           <div dangerouslySetInnerHTML={{ __html: episodio.description }} />
         </em>
-        <BarraAudio
+        <Audio
           controls
           src={episodio.audioUrl}
         />
-      </ContainerEpisodio>
+      </ContainerEpisode>
     </Container>
   )
 }

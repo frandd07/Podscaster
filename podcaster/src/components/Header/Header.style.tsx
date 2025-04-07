@@ -15,13 +15,13 @@ export const Navbar = styled.header`
   justify-content: space-between;
 `
 
-export const Titulo = styled.h1`
+export const Title = styled.h1`
   color: #5b87b1;
   font-size: 1.3rem;
   margin: 0;
 `
 
-export const LinkInicio = styled(Link)`
+export const LinkHome = styled(Link)`
   text-decoration: none;
 `
 
@@ -34,7 +34,7 @@ const spin = keyframes`
   }
 `
 
-export const IndicadorVisual = styled.div`
+export const VisualIndicator = styled.div`
   position: fixed;
   top: 1rem;
   right: 1rem;
