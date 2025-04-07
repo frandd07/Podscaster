@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { Podcast } from '../models/podcastdetail.model'
-import { Episode } from '../models/episodedetail.model'
+import { Podcast } from '../models/podcastDetail.model'
+import { Episode } from '../models/episodeDetail.model'
 
 export async function getEpisodeDetails(
   podcastId: string,

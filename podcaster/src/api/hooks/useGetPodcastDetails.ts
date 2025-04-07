@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { getPodcastDetails } from '@api/services/podcastDetails.service'
-import { Podcast, Episode } from '@api/models/podcastdetail.model'
+import { Podcast, Episode } from '@api/models/podcastDetail.model'
 import { ErrorModel } from '@api/models/error.model'
 
 export const useGetPodcastDetails = (podcastId?: string) =>

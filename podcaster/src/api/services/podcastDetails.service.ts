@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Podcast, Episode } from '../models/podcastdetail.model'
+import { Podcast, Episode } from '@api/models/podcastDetail.model'
 import { formatDuration } from '@modules/PodcastDetails/PodcastDetails.utils'
 
 export async function getPodcastDetails(
