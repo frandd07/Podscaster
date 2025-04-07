@@ -15,6 +15,7 @@ export function EpisodeDetails() {
   const { podcastId, episodeId } = useParams()
   const { t } = useTranslation()
 
+  if (!podcastId || !episodeId) return <p>{t('podcastDetails.negative')}</p>
   const { data, isLoading, isError } = useGetEpisodeDetails(podcastId, episodeId)
 
   if (isLoading) return <Header cargando />

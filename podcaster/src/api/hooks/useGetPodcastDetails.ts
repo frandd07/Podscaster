@@ -6,7 +6,12 @@ import { ErrorModel } from '@api/models/error.model'
 export const useGetPodcastDetails = (podcastId?: string) =>
   useQuery<{ podcast: Podcast; episodios: Episode[] }, ErrorModel>({
     queryKey: ['podcastDetails', podcastId],
-    queryFn: () => getPodcastDetails(podcastId!),
+    queryFn: () => {
+      if (!podcastId) {
+        throw new Error('Falta el podcastId')
+      }
+      return getPodcastDetails(podcastId)
+    },
     enabled: !!podcastId,
     staleTime: 24 * 60 * 60 * 1000,
   })
