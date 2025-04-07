@@ -15,6 +15,7 @@ import {
 } from './DetallesPodcast.style'
 import Header from '@components/Header'
 import { formatDate, formatDuration } from './DetallesPodcast.utils'
+import { useTranslation } from 'react-i18next'
 
 interface Episodio {
   title: string
@@ -36,6 +37,7 @@ interface Podcast {
 
 export function DetallesPodcast() {
   const { podcastId } = useParams()
+  const { t } = useTranslation()
 
   const [podcast, setPodcast] = useState<Podcast | null>(null)
   const [episodios, setEpisodios] = useState<Episodio[]>([])
@@ -126,25 +128,30 @@ export function DetallesPodcast() {
         />
         <Linea />
         <h2>{podcast.collectionName}</h2>
-        <p>by {podcast.artistName}</p>
+        <p>
+          {' '}
+          {t('podcastDetails.by')}: {podcast.artistName}
+        </p>
         <Linea />
         <p>
-          <strong>Description:</strong>
+          <strong> {t('podcastDetails.description')}:</strong>
           <div dangerouslySetInnerHTML={{ __html: podcast.description || '' }} />
         </p>
       </Sidebar>
 
       <div>
         <ContainerEpisodio>
-          <h2>Episodes: {episodios.length}</h2>
+          <h2>
+            {t('podcastDetails.episodes')}: {episodios.length}
+          </h2>
         </ContainerEpisodio>
         <MargenTabla>
           <Tabla>
             <thead>
               <Tr>
-                <Th>Title</Th>
-                <Th>Date</Th>
-                <Th>Duration</Th>
+                <Th> {t('podcastDetails.title')}</Th>
+                <Th> {t('podcastDetails.date')}</Th>
+                <Th> {t('podcastDetails.duracion')}</Th>
               </Tr>
             </thead>
             <tbody>

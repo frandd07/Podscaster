@@ -73,7 +73,9 @@ export function Principal() {
                 alt={podcast.name}
               />
               <TituloCard>{podcast.name.toUpperCase()}</TituloCard>
-              <Autor>Author: {podcast.author}</Autor>
+              <Autor>
+                {t('mainPage.authorLabel')}: {podcast.author}
+              </Autor>
             </CardContenido>
           </Card>
         ))}

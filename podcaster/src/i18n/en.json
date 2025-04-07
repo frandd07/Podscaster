@@ -1,3 +1,16 @@
 {
-  "mainPage.placeholder.filterPodcast": "Filter podcast..."
+  "mainPage": {
+    "placeholder": {
+      "filterPodcast": "Filter podcast..."
+    },
+    "authorLabel": "Author"
+  },
+  "podcastDetails": {
+    "episodes": "Episodes",
+    "description": "Description",
+    "title": "Title",
+    "duracion": "Duration",
+    "date": "Date",
+    "by": "by"
+  }
 }

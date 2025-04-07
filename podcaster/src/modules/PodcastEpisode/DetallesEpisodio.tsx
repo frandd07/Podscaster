@@ -12,6 +12,7 @@ import {
   Linea,
   Sidebar,
 } from '@modules/PodcastDetails/DetallesPodcast.style'
+import { useTranslation } from 'react-i18next'
 
 interface Episodio {
   trackId: string
@@ -31,6 +32,7 @@ interface Podcast {
 
 export function DetallesEpisodio() {
   const { podcastId, episodeId } = useParams()
+  const { t } = useTranslation()
 
   const [podcast, setPodcast] = useState<Podcast | null>(null)
   const [episodio, setEpisodio] = useState<Episodio | null>(null)
@@ -108,13 +110,14 @@ export function DetallesEpisodio() {
         </h2>
 
         <p>
-          by <Link to={`/podcast/${podcastId}`}>{podcast.artistName}</Link>
+          {t('podcastDetails.by')}
+          <Link to={`/podcast/${podcastId}`}> {podcast.artistName}</Link>
         </p>
 
         <Linea />
 
         <p>
-          <strong>Description:</strong>
+          <strong>{t('podcastDetails.description')}:</strong>
           <div dangerouslySetInnerHTML={{ __html: podcast.description || '' }} />
         </p>
       </Sidebar>
