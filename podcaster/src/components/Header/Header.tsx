@@ -11,7 +11,7 @@ export const Header = ({ cargando }: Props) => {
       <LinkHome to="/">
         <Title>Podcaster</Title>
       </LinkHome>
-      {cargando && <VisualIndicator />}
+      {cargando && <VisualIndicator data-testid="spinner" />}
     </Navbar>
   )
 }

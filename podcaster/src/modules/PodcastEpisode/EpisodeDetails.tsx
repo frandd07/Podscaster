@@ -62,6 +62,7 @@ export function EpisodeDetails() {
         <Audio
           controls
           src={episodio.audioUrl}
+          data-testid="audio-element"
         />
       </ContainerEpisode>
     </Container>
