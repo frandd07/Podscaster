@@ -6,7 +6,8 @@ export async function getPodcastDetails(
   podcastId: string,
 ): Promise<{ podcast: Podcast; episodios: Episode[] }> {
   try {
-    const lookupRes = await axios.get(`https://itunes.apple.com/lookup?id=${podcastId}`)
+    const lookupUrl = import.meta.env.VITE_ITUNES_LOOKUP_URL
+    const lookupRes = await axios.get(`${lookupUrl}?id=${podcastId}`)
     const info = lookupRes.data.results[0]
 
     const podcastData: Podcast = {
@@ -18,9 +19,9 @@ export async function getPodcastDetails(
       description: '',
     }
 
-    const rssResponse = await axios.get(
-      `https://cors-anywhere.herokuapp.com/${podcastData.feedUrl}`,
-    )
+    const corsProxy = import.meta.env.VITE_CORS_PROXY
+    const rssResponse = await axios.get(`${corsProxy}${podcastData.feedUrl}`)
+
     const xmlString = rssResponse.data
     const parser = new DOMParser()
     const xml = parser.parseFromString(xmlString, 'application/xml')

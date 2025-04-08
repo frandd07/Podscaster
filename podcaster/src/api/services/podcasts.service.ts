@@ -1,11 +1,10 @@
 import { Podcast, respAPI } from '@api/models/podcast.model'
 import axios from 'axios'
+const url = import.meta.env.VITE_PODCAST_API_URL
 
 export const getPodcasts = async () => {
   try {
-    const response = await axios.get<respAPI>(
-      'https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json',
-    )
+    const response = await axios.get<respAPI>(url)
 
     const data = response.data.feed.entry
 
