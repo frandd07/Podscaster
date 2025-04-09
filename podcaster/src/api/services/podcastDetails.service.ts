@@ -5,6 +5,37 @@ import { formatDuration } from '@modules/PodcastDetails/PodcastDetails.utils'
 export async function getPodcastDetails(
   podcastId: string,
 ): Promise<{ podcast: Podcast; episodios: Episode[] }> {
+  if (import.meta.env.VITE_IS_MOCK === 'true') {
+    return {
+      podcast: {
+        collectionId: 101,
+        collectionName: 'Futbol',
+        artistName: 'Miguel Angel Roman',
+        artworkUrl600: 'https://picsum.photos/600',
+        feedUrl: 'https://example.com/feed.xml',
+        description: 'El mejor podcast de fútbol',
+      },
+      episodios: [
+        {
+          title: 'Episode 1: Inauguración',
+          pubDate: '2022-01-01T08:00:00Z',
+          description: 'Inicio del podcast y presentación del programa.',
+          audioUrl: 'https://example.com/audio1.mp3',
+          duration: '35:20',
+          episodeId: 'ep101',
+        },
+        {
+          title: 'Episode 2: La Continuación',
+          pubDate: '2022-01-08T08:00:00Z',
+          description: 'Análisis profundo de los mejores partidos.',
+          audioUrl: 'https://example.com/audio2.mp3',
+          duration: '40:15',
+          episodeId: 'ep102',
+        },
+      ],
+    }
+  }
+
   try {
     const lookupUrl = import.meta.env.VITE_ITUNES_LOOKUP_URL
     const lookupRes = await axios.get(`${lookupUrl}?id=${podcastId}`)

@@ -6,6 +6,25 @@ export async function getEpisodeDetails(
   podcastId: string,
   episodeId: string,
 ): Promise<{ podcast: Podcast; episodio: Episode | null }> {
+  if (import.meta.env.VITE_IS_MOCK === 'true') {
+    return {
+      podcast: {
+        collectionId: 101,
+        collectionName: 'Futbol',
+        artistName: 'Miguel Angel Roman',
+        artworkUrl600: 'https://picsum.photos/600',
+        feedUrl: 'https://example.com/feed.xml',
+        description: 'El mejor podcast de fútbol',
+      },
+      episodio: {
+        trackId: 'ep101',
+        trackName: 'Episode 1: Inauguración',
+        description: 'Inicio del podcast y presentación del programa.',
+        audioUrl: 'https://example.com/audio1.mp3',
+      },
+    }
+  }
+
   try {
     const lookupUrl = import.meta.env.VITE_ITUNES_LOOKUP_URL
     const lookupRes = await axios.get(`${lookupUrl}?id=${podcastId}`)
