@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { Home } from './Home'
 import { render, screen } from 'src/test/testUtils'
+import { waitFor } from 'src/test/testUtils'
 
 const mockNavigate = vi.fn()
 vi.mock('react-router-dom', async () => {
@@ -18,7 +19,7 @@ describe('Home', () => {
     console.log(screen.debug())
 
     expect(screen.getByText(/Podcaster/i)).toBeInTheDocument()
-    expect(screen.getByText('2')).toBeInTheDocument()
+    await waitFor(() => expect(screen.getByText('2')).toBeInTheDocument())
 
     expect(screen.getByText('TEST PODCAST 1')).toBeInTheDocument()
     expect(screen.getByText('PODCAST 2')).toBeInTheDocument()
@@ -27,7 +28,7 @@ describe('Home', () => {
   it('filtra correctamente los podcasts según el texto ingresado', async () => {
     render(<Home />)
 
-    const input = screen.getByPlaceholderText('Filter podcasts...')
+    const input = screen.getByPlaceholderText('Filter podcast...')
     await userEvent.clear(input)
     await userEvent.type(input, 'Test')
 

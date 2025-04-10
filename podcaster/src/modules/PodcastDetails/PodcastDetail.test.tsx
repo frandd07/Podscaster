@@ -30,7 +30,7 @@ describe('PodcastDetails', () => {
     expect(screen.getByText('Futbol')).toBeInTheDocument()
     expect(screen.getByText(/Miguel Angel Roman/i)).toBeInTheDocument()
     expect(screen.getByText('El mejor podcast de fútbol')).toBeInTheDocument()
-    expect(screen.getByText(/Episodios: 2/i)).toBeInTheDocument()
+    expect(screen.getByText(/Episodes: 2/i)).toBeInTheDocument()
     expect(screen.getByText('Episode 1: Inauguración')).toBeInTheDocument()
     expect(screen.getByText('Episode 2: La Continuación')).toBeInTheDocument()
 
